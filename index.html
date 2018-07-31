@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script>
+      fetch('https://analytics.vrchat.ind3x.site/consolidated_occupants.txt', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'text/plain',
+        }
+      })
+        .then(function(response) {
+          return response.text();
+        })
+        .then(function(text) {
+          const rawEntries = text.trim().split(/\n/);
+
+          const entries = rawEntries.map((entry) => {
+            const splittedEntry = entry.split(';');
+
+            return [
+              new Date(parseInt(splittedEntry[0])),
+              parseInt(splittedEntry[1]),
+              parseInt(splittedEntry[2]),
+              parseInt(splittedEntry[3])
+            ];
+          });
+
+          google.charts.load('current', {'packages':['line']});
+          google.charts.setOnLoadCallback(drawChart);
+
+          function drawChart() {
+            const data = new google.visualization.DataTable();
+
+            data.addColumn('date', 'Date');
+            data.addColumn('number', 'Sky Club');
+            data.addColumn('number', 'Index\'s Home');
+            data.addColumn('number', 'Club Galaxy');
+
+            data.addRows(entries);
+
+            const options = {
+              chart: {
+                title: 'Occupants (updated every 5 minutes)',
+              }
+            };
+
+            const chart = new google.charts.Line(document.getElementById('curve_chart'));
+            chart.draw(data, options);
+          }
+        });
+    </script>
+  </head>
+
+  <body>
+    <div id="curve_chart" style="height: calc(100vh - 1rem)"></div>
+  </body>
+</html>
