@@ -1,6 +1,3 @@
-language: node_js
-node_js:
-  - "8.11.3"
 before_deploy:
   - ssh-add <(echo "$SSH_PRIVATE_KEY")
 deploy:
