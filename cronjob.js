@@ -1,25 +1,24 @@
 const fs = require('fs')
 const https = require('https')
 
+const apiKey = process.env.API_KEY
 const worlds = {
   'sky_club': {
-    url: '/api/1/worlds/wrld_4cda3f9c-2519-43a9-96a2-3c456d71a52a'
+    id: 'wrld_4cda3f9c-2519-43a9-96a2-3c456d71a52a'
   },
   'indexs_home': {
-    url: '/api/1/worlds/wrld_a3a0050c-24a0-4b99-9ed7-a63073187050'
+    id: 'wrld_a3a0050c-24a0-4b99-9ed7-a63073187050'
   },
   'club_galaxy': {
-    url: '/api/1/worlds/wrld_860d0a51-a539-4cc5-860e-bd5f82d3a6d3'
+    id: 'wrld_860d0a51-a539-4cc5-860e-bd5f82d3a6d3'
   }
 }
-
-const apiKey = process.env.API_KEY
 
 
 function request(worldKey, world, callback) {
   const req = https.get({
     hostname: 'vrchat.com',
-    path: world.url,
+    path: `/api/1/worlds/${world.id}`,
     headers: { 'cookie': `apiKey=${apiKey}` }
   }, (res) => {
     let data = ''
