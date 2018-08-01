@@ -1,11 +1,9 @@
+install: true
+script: true
 before_deploy:
   - ssh-add <(echo "$SSH_PRIVATE_KEY")
-install: true
-script:
 deploy:
   provider: script
   script: rsync --quiet cronjob.js index.html $PRODUCTION_USER@$PRODUCTION_HOST:$PRODUCTION_WEBROOT
   on:
     branch: master
-os:
-  - linux
