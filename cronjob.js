@@ -1,5 +1,5 @@
-const fs = require('fs');
-const https = require('https');
+const fs = require('fs')
+const https = require('https')
 
 const worlds = {
   'sky_club': {
@@ -17,17 +17,13 @@ const apiKey = process.env.API_KEY
 
 
 function request(worldKey, world, callback) {
-  const req = https.request({
+  const req = https.get({
     hostname: 'vrchat.com',
     path: world.url,
-    port: 443,
-    method: 'GET',
     headers: { 'cookie': `apiKey=${apiKey}` }
   }, (res) => {
     let data = ''
-    res.on('data', (chunk) => {
-      data += chunk
-    })
+    res.on('data', chunk => data += chunk)
 
     res.on('end', () => {
       worlds[worldKey].rawResponse = JSON.parse(data)
@@ -43,21 +39,22 @@ function request(worldKey, world, callback) {
 
 
 function saveConsolidatedOccupoants() {
-  let line = Date.now();
+  let line = Date.now()
 
   for (let worldKey in worlds) {
     if (!worlds.hasOwnProperty(worldKey)) return
 
     if (typeof worlds[worldKey].rawResponse.occupants !== 'number') {
       line += ';null'
-      continue;
+      continue
     }
 
     line += ';' + worlds[worldKey].rawResponse.occupants
   }
 
-  fs.appendFile(`${process.env.FILE_PATH}consolidated_occupants.txt`, line + "\n", (err) => {
-    if (err) console.error(err);
+  const path = process.env.FILE_PATH ? `${process.env.FILE_PATH}consolidated_occupants.txt` : 'consolidated_occupants.txt'
+  fs.appendFile(path, line + "\n", (err) => {
+    if (err) console.error(err)
   });
 }
 
