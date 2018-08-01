@@ -7,6 +7,7 @@ jobs:
       - run:
           name: Deploy over SSH
           command: |
+            ls
             rsync --quiet cronjob.js index.html $PRODUCTION_USER@$PRODUCTION_HOST:$PRODUCTION_WEBROOT
 
 workflows:
