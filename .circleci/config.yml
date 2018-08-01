@@ -1,0 +1,20 @@
+version: 2
+jobs:
+  deploy:
+    machine:
+      enabled: true
+    steps:
+      - run:
+          name: Deploy over SSH
+          command: |
+            rsync --quiet cronjob.js index.html $PRODUCTION_USER@$PRODUCTION_HOST:$PRODUCTION_WEBROOT
+
+workflows:
+  version: 2
+  deploy:
+    jobs:
+      - build
+      - deploy:
+          filters:
+            branches:
+              only: master
