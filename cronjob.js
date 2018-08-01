@@ -2,7 +2,7 @@ const fs = require('fs')
 const https = require('https')
 
 const apiKey = process.env.API_KEY
-const rootPath = process.env.ROOT_PATH || './';
+const rootPath = `${process.env.ROOT_PATH}/` || './';
 const worlds = require(`${rootPath}worlds.json`)
 
 
