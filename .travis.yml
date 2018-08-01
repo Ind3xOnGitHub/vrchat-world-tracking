@@ -1,6 +1,7 @@
 install: true
 script: true
 before_deploy:
+  - eval $(ssh-agent -s)
   - ssh-add <(echo "$SSH_PRIVATE_KEY")
 deploy:
   provider: script
