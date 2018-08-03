@@ -5,14 +5,15 @@ $ scp consolidated_occupants.txt cronjob.js index.html worlds.json user@host:/pa
 ```
 
 ```shell
-$ chmod 0644 .htaccess index.html consolidated_occupants.txt
+$ chmod 0644 .htaccess consolidated_occupants.txt index.html
+$ chmod 0600 worlds.json
 $ chmod 0700 cronjob.js
 ```
 
 ```
 $ crontab -e
 
-API_KEY="your api key"
+API_KEY="your api key" # Optional for now since everyone uses the same API key currently
 ROOT_PATH="/path/to/your/webroot"
 */5 * * * * /path/to/your/node /path/to/your/webroot/crontob.js
 ```
