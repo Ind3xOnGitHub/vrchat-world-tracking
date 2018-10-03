@@ -22,7 +22,8 @@
               new Date(parseInt(splittedEntry[0])),
               parseInt(splittedEntry[1]),
               parseInt(splittedEntry[2]),
-              parseInt(splittedEntry[3])
+              parseInt(splittedEntry[3]),
+              parseInt(splittedEntry[4])
             ];
           });
 
@@ -36,6 +37,7 @@
             data.addColumn('number', 'Sky Club');
             data.addColumn('number', 'Index\'s Home');
             data.addColumn('number', 'Club Galaxy');
+            data.addColumn('number', 'Full Moon Party Beach Club');
 
             data.addRows(entries);
 
