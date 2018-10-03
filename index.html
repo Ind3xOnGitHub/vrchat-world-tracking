@@ -1,7 +1,11 @@
 <!DOCTYPE html>
 <html>
   <head>
-  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/modules/export-data.js"></script>
+    
     <script>
       fetch('https://analytics.vrchat.ind3x.site/consolidated_occupants.txt', {
         method: 'GET',
@@ -14,50 +18,69 @@
         })
         .then(function(text) {
           const rawEntries = text.trim().split(/\n/);
+          const splittedEntries = rawEntries.map(entry => {
+            return entry.split(';')
+          })
 
-          const entries = rawEntries.map((entry) => {
-            const splittedEntry = entry.split(';');
+          const entries1 = splittedEntries.map(entry => [new Date(parseInt(entry[0])), parseInt(entry[1])])
+          const entries2 = splittedEntries.map(entry => [new Date(parseInt(entry[0])), parseInt(entry[2])])
+          const entries3 = splittedEntries.map(entry => [new Date(parseInt(entry[0])), parseInt(entry[3])])
+          const entries4 = splittedEntries.map(entry => [new Date(parseInt(entry[0])), parseInt(entry[4])])
+          const entries5 = splittedEntries.map(entry => [new Date(parseInt(entry[0])), parseInt(entry[5])])
 
-            return [
-              new Date(parseInt(splittedEntry[0])),
-              parseInt(splittedEntry[1]),
-              parseInt(splittedEntry[2]),
-              parseInt(splittedEntry[3]),
-              parseInt(splittedEntry[4]),
-              parseInt(splittedEntry[5])
-            ];
-          });
-
-          google.charts.load('current', {'packages':['line']});
-          google.charts.setOnLoadCallback(drawChart);
-
-          function drawChart() {
-            const data = new google.visualization.DataTable();
-
-            data.addColumn('date', 'Date');
-            data.addColumn('number', 'Sky Club');
-            data.addColumn('number', 'Ind3x\'s Home');
-            data.addColumn('number', 'Club Galaxy');
-            data.addColumn('number', 'Full Moon Party Beach Club');
-            data.addColumn('number', 'Void Club');
-
-            data.addRows(entries);
-
-            const options = {
-              chart: {
-                title: 'Occupants (updated every 5 minutes)',
-              },
-              explorer: {
-                actions: ['dragToZoom', 'rightClickToReset'],
-                axis: 'horizontal',
-                keepInBounds: true,
-                maxZoomIn: 4.0
+          Highcharts.chart('curve_chart', {
+            chart: { zoomType: 'x' },
+            title: { text: 'Occupants (updated every 5 minutes)' },
+            subtitle: {
+              text: document.ontouchstart === undefined ? 'Click and drag in the plot area to zoom in' : 'Pinch the chart to zoom in'
+            },
+            xAxis: { type: 'datetime' },
+            yAxis: { title: { text: 'Occupants' } },
+            legend: { enabled: false },
+            plotOptions: {
+              area: {
+                fillColor: {
+                  linearGradient: {
+                    x1: 0,
+                    y1: 0,
+                    x2: 0,
+                    y2: 1
+                  },
+                  stops: [
+                    [0, Highcharts.getOptions().colors[0]],
+                    [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+                  ]
+                },
+                marker: { radius: 2 },
+                lineWidth: 1,
+                states: { hover: { lineWidth: 1 } },
+                threshold: null
               }
-            };
-
-            const chart = new google.charts.Line(document.getElementById('curve_chart'));
-            chart.draw(data, options);
-          }
+            },
+            
+            series: [
+              {
+                name: 'Sky Club',
+                data: entries1
+              },
+              {
+                name: 'Ind3x\'s Home',
+                data: entries2
+              },
+              {
+                name: 'Void Club',
+                data: entries3
+              },
+              {
+                name: 'Club Galaxy',
+                data: entries4
+              },
+              {
+                name: 'Full Moon Party Beach Club',
+                data: entries5
+              }
+            ]
+          });
         });
     </script>
   </head>
