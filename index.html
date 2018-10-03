@@ -47,7 +47,12 @@
               chart: {
                 title: 'Occupants (updated every 5 minutes)',
               },
-              explorer: {}
+              explorer: {
+                actions: ['dragToZoom', 'rightClickToReset'],
+                axis: 'horizontal',
+                keepInBounds: true,
+                maxZoomIn: 4.0
+              }
             };
 
             const chart = new google.charts.Line(document.getElementById('curve_chart'));
