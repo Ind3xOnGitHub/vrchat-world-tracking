@@ -20,7 +20,6 @@ function request(worldKey, world, callback) {
     res.on('data', chunk => data += chunk)
 
     res.on('end', () => {
-      console.log(JSON.parse(data))
       worlds[worldKey].rawResponse = JSON.parse(data)
       callback()
     })
