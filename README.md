@@ -13,7 +13,8 @@ $ chmod 0700 cronjob.js
 ```
 $ crontab -e
 
-API_KEY="your api key" # Optional for now since everyone uses the same API key currently
+VRC_USERNAME=""
+VRC_PASSWORD=""
 ROOT_PATH="/path/to/your/webroot"
 */5 * * * * /path/to/your/node /path/to/your/webroot/crontob.js
 ```
