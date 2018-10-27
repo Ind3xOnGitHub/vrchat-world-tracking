@@ -23,7 +23,7 @@ function authenticate(callback) {
     path: `/login`,
     port: '443',
     headers: {
-      'Content-Type': 'application/x-www-form-urlencoded'
+      'Content-Type': 'application/x-www-form-urlencoded',
       'Content-Length': Buffer.byteLength(data)
     }
   }, (res) => {
