@@ -12,15 +12,17 @@ const cookies = {}
 
 
 function authenticate(callback) {
-  console.log('authenticate()')
-  
   const req = https.request({
     method: 'POST',
     hostname: 'api.vrchat.cloud',
     path: `/login`,
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
   }, (res) => {
+    console.log('callback')
+    
     res.on('end', () => {
+      console.log('end')
+      console.log(res)
       console.log(res.headers)
       res.headers['set-cookie'].forEach(cookie => {
         cookie.split('=')
@@ -34,7 +36,6 @@ function authenticate(callback) {
       console.error(err.message)
     })
 
-  console.log('before write')
   req.write(querystring.stringify({
     'username_email': process.env.VRC_USERNAME,
     'password': process.env.VRC_PASSWORD
@@ -88,6 +89,7 @@ function saveConsolidatedOccupoants() {
 
 let i = 0
 function requestLoop() {
+  console.log('requestLoop()')
   if (i === worldKeys.length) {
     saveConsolidatedOccupoants()
     return
