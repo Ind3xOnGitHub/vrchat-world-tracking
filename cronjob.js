@@ -12,6 +12,8 @@ const cookies = {}
 
 
 function authenticate(callback) {
+  console.log('authenticate()')
+  
   const req = https.request({
     method: 'POST',
     hostname: 'api.vrchat.cloud',
@@ -32,6 +34,7 @@ function authenticate(callback) {
       console.error(err.message)
     })
 
+  console.log('before write')
   req.write(querystring.stringify({
     'username_email': process.env.VRC_USERNAME,
     'password': process.env.VRC_PASSWORD
