@@ -33,7 +33,7 @@ function authenticate(callback) {
     })
 
   req.write(querystring.stringify({
-    'username_email': process.env.VRC_USERNAME
+    'username_email': process.env.VRC_USERNAME,
     'password': process.env.VRC_PASSWORD
   }))
   req.end()
