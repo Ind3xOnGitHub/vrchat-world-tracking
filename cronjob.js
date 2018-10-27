@@ -1,65 +1,26 @@
 const fs = require('fs')
 const https = require('https')
 const path = require('path')
-const querystring = require('querystring')
 
+const API_KEY = process.env.VRC_API_KEY ? process.env.VRC_API_KEY : 'JlE5Jldo5Jibnk5O5hTx6XVqsJu4WJ26'
 const rootPath = path.resolve(process.env.ROOT_PATH ? process.env.ROOT_PATH : '.')
 
 const worlds = require(path.resolve(rootPath, 'worlds.json'))
 const worldKeys = Object.keys(worlds)
 
-const cookies = {}
-
-
-function authenticate(callback) {
-  const data = querystring.stringify({
-    'username_email': process.env.VRC_USERNAME,
-    'password': process.env.VRC_PASSWORD
-  })
-  
-  const req = https.request({
-    method: 'POST',
-    hostname: 'api.vrchat.cloud',
-    path: `/login`,
-    port: '443',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
-      'Content-Length': Buffer.byteLength(data)
-    }
-  }, (res) => {
-    console.log('callback')
-    
-    res.on('end', () => {
-      console.log('end')
-      console.log(res)
-      console.log(res.headers)
-      res.headers['set-cookie'].forEach(cookie => {
-        cookie.split('=')
-        cookies[cookie[0]] = cookie[1]
-      })
-
-      callback()
-    })
-  })
-    .on('error', (err) => {
-      console.error(err.message)
-    })
-
-  req.write(data)
-  req.end()
-}
-
 
 function request(worldKey, world, callback) {
   const req = https.get({
-    hostname: 'api.vrchat.cloud',
+    host: 'api.vrchat.cloud',
     path: `/api/1/worlds/${world.id}`,
-    headers: { 'cookie': `auth=${cookies.auth}; apiKey=${cookies.apiKey}` }
+    headers: { 'cookie': `apiKey=${API_KEY}` },
+    auth: process.env.VRC_USERNAME + ':' + process.env.VRC_PASSWORD
   }, (res) => {
     let data = ''
     res.on('data', chunk => data += chunk)
 
     res.on('end', () => {
+      console.log(JSON.parse(data))
       worlds[worldKey].rawResponse = JSON.parse(data)
       callback()
     })
@@ -108,4 +69,4 @@ function requestLoop() {
 }
 
 
-authenticate(requestLoop)
+requestLoop()
