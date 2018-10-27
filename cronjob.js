@@ -12,11 +12,20 @@ const cookies = {}
 
 
 function authenticate(callback) {
+  const data = querystring.stringify({
+    'username_email': process.env.VRC_USERNAME,
+    'password': process.env.VRC_PASSWORD
+  })
+  
   const req = https.request({
     method: 'POST',
     hostname: 'api.vrchat.cloud',
     path: `/login`,
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+    port: '443',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded'
+      'Content-Length': Buffer.byteLength(data)
+    }
   }, (res) => {
     console.log('callback')
     
@@ -36,10 +45,7 @@ function authenticate(callback) {
       console.error(err.message)
     })
 
-  req.write(querystring.stringify({
-    'username_email': process.env.VRC_USERNAME,
-    'password': process.env.VRC_PASSWORD
-  }))
+  req.write(data)
   req.end()
 }
 
