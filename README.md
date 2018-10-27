@@ -15,6 +15,7 @@ $ crontab -e
 
 VRC_USERNAME=""
 VRC_PASSWORD=""
+VRC_API_KEY="" # Currently optional since it's the same for everyone
 ROOT_PATH="/path/to/your/webroot"
 */5 * * * * /path/to/your/node /path/to/your/webroot/crontob.js
 ```
