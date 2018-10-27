@@ -55,7 +55,6 @@ function saveConsolidatedOccupoants() {
 
 let i = 0
 function requestLoop() {
-  console.log('requestLoop()')
   if (i === worldKeys.length) {
     saveConsolidatedOccupoants()
     return
